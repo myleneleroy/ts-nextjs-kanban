@@ -2,26 +2,7 @@ import React from "react";
 import { GetServerSideProps } from 'next';
 import Layout from "../components/Layout";
 import KanbanBoard from '../components/KanbanBoard';
-
-type Task = {
-  id: string;
-  title: string;
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-  position: number;
-};
-
-type ColumnType = {
-  id: string;
-  title: string;
-  position: number;
-  tasks: Task[];
-};
-
-type Board = {
-  id: string;
-  title: string;
-  columns: ColumnType[];
-};
+import { Board } from "../components/KanbanBoard/types";
 
 type KanbanBoardProps = {
   boardData: Board;

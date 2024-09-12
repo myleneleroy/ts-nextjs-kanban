@@ -1,22 +1,7 @@
 import { useState, useEffect } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import Column from './components/Column';
-
-// Types
-type ColumnType = {
-    id: string;
-    title: string;
-    position: number;
-    tasks: Array<{
-        id: string; title: string; description: string | null; status: 'TODO' | 'IN_PROGRESS' | 'DONE'; updatedAt: string;
-    }>;
-};
-
-type Board = {
-    id: string;
-    title: string;
-    columns: ColumnType[];
-};
+import { Board } from './types';
 
 type KanbanBoardProps = {
     boardData: Board;
