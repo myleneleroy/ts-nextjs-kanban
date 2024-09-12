@@ -1,0 +1,48 @@
+.task-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.task-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.task-status {
+    border-left: 3px solid #e0e0e0;
+}
+
+.task-status.todo {
+    border-left-color: #f17406;
+}
+
+.task-status.in_progress {
+    border-left-color: #3434d8;
+}
+
+.task-status.done {
+    border-left-color: #47c258;
+}
+
+.task-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.task-description {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+.task-meta {
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+.task-meta p {
+    margin: 4px 0;
+}

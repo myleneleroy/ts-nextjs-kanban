@@ -1,0 +1,47 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Task {
+  id        String   @id @default(cuid())  // Identifiant unique
+  title     String                            // Titre de la tâche
+  description String?                         // Description de la tâche
+  status    TaskStatus @default(TODO)         // Statut de la tâche
+  position  Int                                // Position de la tâche dans la colonne
+  createdAt DateTime @default(now())           // Date de création
+  updatedAt DateTime @updatedAt                // Dernière mise à jour
+  column    Column   @relation(fields: [columnId], references: [id], onDelete: Cascade)  // Relation avec la colonne
+  columnId  String                             // Clé étrangère vers la colonne
+}
+
+model Column {
+  id       String   @id @default(cuid())      // Identifiant unique
+  title    String                               // Titre de la colonne (e.g., "To Do", "In Progress")
+  position Int                                  // Position de la colonne dans le tableau
+  board    Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)   // Relation avec le tableau
+  boardId  String                              // Clé étrangère vers le tableau
+  tasks    Task[]                               // Tâches associées à cette colonne
+}
+
+model Board {
+  id         String   @id @default(cuid())    // Identifiant unique
+  title      String                             // Titre du tableau
+  description String?                           // Description du tableau (facultatif)
+  createdAt  DateTime @default(now())           // Date de création du tableau
+  updatedAt  DateTime @updatedAt                // Dernière mise à jour
+  columns    Column[]                           // Liste des colonnes associées à ce tableau
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
