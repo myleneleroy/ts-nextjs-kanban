@@ -1,18 +1,18 @@
 import React from "react";
 import { GetServerSideProps } from 'next';
 import Layout from "../components/Layout";
-import KanbanBoard from '../components/KanbanBoard';
 import { Board } from "../components/KanbanBoard/types";
+import prisma from "../lib/prisma";
+import List from "../components/List/List";
 
-type KanbanBoardProps = {
-  boardData: Board;
-};
+interface BoardsListProps {
+  boards: Board[];
+}
 
-const Project: React.FC<KanbanBoardProps> = ({ boardData }) => {
+const Project: React.FC<BoardsListProps> = ({ boards }) => {
   return (
     <Layout>
-      <h1>Kanban Board</h1>
-      <KanbanBoard boardData={boardData} />
+      <List boards={boards} />
     </Layout>
   );
 };
@@ -20,15 +20,16 @@ const Project: React.FC<KanbanBoardProps> = ({ boardData }) => {
 export default Project;
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Utilise localhost en développement
+  const boards = await prisma.board.findMany();
 
-  // Fetch data from the API or database on the server side
-  const response = await fetch(`${baseUrl}/api/boards/cm0z0znsd0000s59zki9sq44w`);
-  const boardData: Board = await response.json();
+  // Convert any Date fields to strings to avoid serialization issues
+  const serializedBoards = boards.map((board) => ({
+    ...board,
+    createdAt: board.createdAt.toISOString(), // Convert Date to string
+    updatedAt: board.updatedAt?.toISOString(), // Handle optional dates similarly
+  }));
 
   return {
-    props: {
-      boardData, // Passed as a prop to the page
-    },
+    props: { boards: serializedBoards },
   };
 };

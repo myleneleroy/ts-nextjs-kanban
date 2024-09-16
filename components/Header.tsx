@@ -9,10 +9,8 @@ const Header: React.FC = () => {
 
   let left = (
     <div className="left">
-      <Link href="/">
-        <a className="bold" data-active={isActive("/")}>
-          Feed Me 
-        </a>
+      <Link href="/" className="bold" data-active={isActive("/")}>
+        Kanban
       </Link>
       <style jsx>{`
         .bold {
@@ -46,7 +44,9 @@ const Header: React.FC = () => {
         nav {
           display: flex;
           padding: 2rem;
+          color: white;
           align-items: center;
+          background: black;
         }
       `}</style>
     </nav>

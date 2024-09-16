@@ -7,7 +7,7 @@ type ColumnProps = {
         id: string;
         title: string;
         tasks: Array<{
-            id: string; title: string; description: string | null; status: 'TODO' | 'IN_PROGRESS' | 'DONE'; updatedAt: string;
+            id: string; title: string; description: string | null; updatedAt: string;
         }>;
     };
 };
@@ -21,7 +21,7 @@ const Column: React.FC<ColumnProps> = ({ column }) => {
                     ref={provided.innerRef}
                     style={{ margin: '8px', width: '300px', backgroundColor: '#f4f5f7', padding: '16px', borderRadius: '8px', flex: 1 }}
                 >
-                    <h3>{column.title}</h3>
+                    <h3 className='mb-4'>{column.title}</h3>
                     {column.tasks.map((task, index) => (
                         <Task key={task.id} task={task} index={index} />
                     ))}

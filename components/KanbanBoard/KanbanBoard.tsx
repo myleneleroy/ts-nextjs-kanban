@@ -13,10 +13,32 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData }) => {
 
     const [isMounted, setIsMounted] = useState(false);
 
-    // Utiliser useEffect pour vérifier si le composant est monté côté client
     useEffect(() => {
         setIsMounted(true);
     }, []);
+
+    const updateTaskInDatabase = async (taskId: string, columnId: string, position: number) => {
+        try {
+            const response = await fetch(`/api/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    columnId,
+                    position,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update task');
+            }
+
+            console.log('Task updated successfully');
+        } catch (error) {
+            console.error('Error updating task:', error);
+        }
+    };
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source } = result;
@@ -38,6 +60,9 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData }) => {
                 ...board,
                 columns: board.columns.map((col) => (col.id === updatedColumn.id ? updatedColumn : col)),
             });
+
+            // Update task position in the same column in the database
+            updateTaskInDatabase(movedTask.id, sourceColumn.id, destination.index);
         } else {
             // Move task to a different column
             const destTasks = [...destColumn.tasks];
@@ -51,12 +76,14 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData }) => {
                     col.id === updatedSourceColumn.id ? updatedSourceColumn : col.id === updatedDestColumn.id ? updatedDestColumn : col
                 ),
             });
+
+            // Update task column and position in the database
+            updateTaskInDatabase(movedTask.id, destColumn.id, destination.index);
         }
     };
 
-    // Rendre le DragDropContext uniquement côté client pour éviter les différences SSR/client
     if (!isMounted) {
-        return null; // Eviter le rendu côté serveur
+        return null; // Avoid SSR issues
     }
 
     if (!board || !board.columns) {
@@ -75,4 +102,3 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData }) => {
 };
 
 export default KanbanBoard;
-
