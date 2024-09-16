@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
     box-sizing: border-box;
 }
@@ -15,7 +19,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
-    background: #ffff;
+    background: rgb(249, 249, 249);
 }
 
 input,
@@ -25,8 +29,4 @@ textarea {
 
 button {
     cursor: pointer;
-}
-
-.layout {
-    padding: 0 2rem;
 }
